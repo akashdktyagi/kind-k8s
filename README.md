@@ -80,7 +80,7 @@ This repo contains template for Kind and k8s ref project deployments
   * Run command: ```kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.5.0/aio/deploy/rec```
   * This will deploy the dashboard in new namespace named dashboard-k8s 
   * Create user using the link: https://github.com/kubernetes/dashboard/blob/master/docs/user/access-control/creating-sample-user.md
-    * Create a new yml file like this: (dashboard-adminuser.yml)[backendservice-deploy-nodeport/dashboard-adminuser.yml]
+    * Create a new yml file like this: [backendservice-deploy-nodeport/dashboard-adminuser.yml](deploy-with-nodeport/dashboard-adminuser.yml)
     * Run ```kubectl apply -f backendservice-deploy-nodeport/dashboard-adminuser.yml```
     * This will create user access
     * Then get the token by running: ```kubectl -n kubernetes-dashboard get secret $(kubectl -n kubernetes-dashboard get sa/admin-user -o jsonpath="{.secrets[0].name}") -o go-template="{{.data.token | base64decode}}"```
@@ -88,3 +88,23 @@ This repo contains template for Kind and k8s ref project deployments
     * Run, ```kubectl proxy```; this will start the dashboard
     * Go to link in your browser: http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/
     * It will ask for token, enter the token generated from previous Step.
+  
+#### Use Ingress Controller to reach servers
+* Use Link: https://kind.sigs.k8s.io/docs/user/ingress/#ingress-nginx
+* Create Kind Cluster which with some ingress setting. File places under: [create cluster with ingress](deploy-with-ingress/kind-cluster-with-ingress.yml)
+* To install NGINX controller: ```kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/kind/deploy.yaml```
+* run this command to make sure the NGIX ingress is working. You will get the message as ```pod/ingress-nginx-controller-56d4b5df54-zw268 condition met```
+```shell
+kubectl wait --namespace ingress-nginx \
+  --for=condition=ready pod \
+  --selector=app.kubernetes.io/component=controller \
+  --timeout=90s
+```
+* run file ```kubectl apply -f deploy-with-ingress/pod-service-ingress.yml```
+* Check if ingress works: 
+```shell
+# should output "foo"
+curl localhost/foo
+# should output "bar"
+curl localhost/bar
+```
