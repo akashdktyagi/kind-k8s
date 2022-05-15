@@ -77,7 +77,7 @@ This repo contains template for Kind and k8s ref project deployments
 * Follow links: https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/
 * Follow Links: https://github.com/kubernetes/dashboard/blob/master/docs/user/access-control/creating-sample-user.md
 * Steps to follow:
-  * Run command: ```kubectl apply -f kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.5.0/aio/deploy/recommended.yaml```
+  * Run command: ```kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.5.0/aio/deploy/recommended.yaml```
   * This will deploy the dashboard in new namespace named dashboard-k8s 
   * Create user using the link: https://github.com/kubernetes/dashboard/blob/master/docs/user/access-control/creating-sample-user.md
     * Create a new yml file like this: [backendservice-deploy-nodeport/dashboard-adminuser.yml](deploy-with-nodeport/dashboard-adminuser.yml)
